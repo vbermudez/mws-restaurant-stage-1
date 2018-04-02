@@ -1,12 +1,23 @@
 var cacheName = 'restaurants';
 var filesToCache = [
     '/',
+    '/manifest.json',
     '/css/styles.css',
     '/js/dbhelper.js',
     '/js/main.js',
-    '/js/restaurant_info.js'
+    '/js/restaurant_info.js',
+    '/data/restaurants.json'
 ];
+
 self.addEventListener('install', function (e) {
+    for (let i = 1; i < 11; ++i) {
+        filesToCache.push(`/restaurant.html?id=${i}`);
+        filesToCache.push(`/img/${i}.jpg`);
+        filesToCache.push(`/img/${i}-380_1x.jpg`);
+        filesToCache.push(`/img/${i}-380_2x.jpg`);
+        filesToCache.push(`/img/${i}-512_1x.jpg`);
+        filesToCache.push(`/img/${i}-512_2x.jpg`);
+    }
     console.log('[ServiceWorker] Install');
     e.waitUntil(
         caches.open(cacheName).then(function (cache) {
