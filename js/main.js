@@ -180,8 +180,9 @@ createRestaurantHTML = (restaurant) => {
   const image = document.createElement('picture');
   image.className = 'restaurant-img';
   // image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  image.setAttribute('aria-labelledby', restaurant.name);
-  image.setAttribute('role', 'img');
+  // image.setAttribute('aria-labelledby', restaurant.name);
+  image.setAttribute('role', 'presentation'); //'img');
+  image.setAttribute('alt', '');
 
   const sources = getResposiveImgSources(restaurant);
 
@@ -191,7 +192,7 @@ createRestaurantHTML = (restaurant) => {
   
   li.append(image);
 
-  const name = document.createElement('h1');
+  const name = document.createElement('h3');
   name.innerHTML = restaurant.name;
   li.append(name);
 
