@@ -48,6 +48,34 @@ fetchRestaurantFromURL = (callback) => {
 /**
  * Create restaurant HTML and add it to the webpage
  */
+getResposiveImgSources = (restaurant) => {
+  const mediaQueries = {
+    '(max-width:700px)': '-380_',
+    '(min-width:701px)': '-512_'
+  };
+  const sources = [];
+
+  for (const key of Object.keys(mediaQueries)) {
+    const filePart = mediaQueries[key];
+    const s = document.createElement('source');
+    const img1x = `/img/${restaurant.id}${filePart}1x.jpg 1x`; 
+    const img2x = `/img/${restaurant.id}${filePart}2x.jpg 2x`; 
+
+    s.setAttribute('media', key);
+    s.setAttribute('srcset', `${img1x},${img2x}`);
+    sources.push(s);
+  }
+
+  const img = document.createElement('img');
+
+  img.src = DBHelper.imageUrlForRestaurant(restaurant);
+  img.setAttribute('alt', restaurant.name);
+  img.className = 'restaurant-img';
+  sources.push(img);
+
+  return sources;
+};
+
 fillRestaurantHTML = (restaurant = self.restaurant) => {
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
@@ -57,7 +85,15 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img'
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  // image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.setAttribute('role', 'presentation'); //'img');
+  image.setAttribute('alt', '');
+
+  const sources = getResposiveImgSources(restaurant);
+
+  for (source of sources) {
+    image.append(source);
+  }
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
